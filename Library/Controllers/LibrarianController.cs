@@ -41,7 +41,6 @@ namespace Library.Controllers
                 int totalAmount = CopiesClass.GetTotalByBookId(bookId);
                 totalAmount++;
                 amount++;
-                Console.WriteLine(totalAmount.ToString(), amount.ToString());
                 CopiesClass.Update(bookId, amount);
                 CopiesClass.UpdateTotal(bookId, totalAmount);
                 return RedirectToAction("New");

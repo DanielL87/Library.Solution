@@ -95,5 +95,19 @@ namespace Library.Models
             }
         }
 
+        public static void DeletePatronCopy(int patron_id, int book_id)
+        {
+            MySqlConnection conn = DB.Connection();
+            conn.Open();
+            var cmd = conn.CreateCommand() as MySqlCommand;
+            cmd.CommandText = @"DELETE FROM patrons_copies WHERE patron_id = " + patron_id + " AND book_id = " + book_id + ";";
+            cmd.ExecuteNonQuery();
+            conn.Close();
+            if (conn != null)
+            {
+                conn.Dispose();
+            }
+        }
+
     }
 }

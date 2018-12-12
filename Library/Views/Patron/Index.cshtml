@@ -3,8 +3,19 @@
 }
 
 <div class="container">
-<h2>Library</h2>
-<br>
-<a href="/patron/checkout">Checkout a Book</a><br>
-<a href="/patron/return">Return a Book</a><br>
+    <h2>Library</h2>
+    <br>
+    <a href="/patron/checkout">Checkout a Book</a><br>
+    <br>
+    <br>
+    <form action="/patron/account" method="post">
+        <label for="patronName">Enter your name to view your checked out books.</label><br>
+        <input id="patronName" name="patronName" type="text" required><br>
+        <button id="courseButton"class="btn btn-primary btn-lg" type="submit">View</button>
+    </form>
+    <br>
+    @if(@Model == 1)
+    {
+        <p>You have returned the book to the Library!</p>
+    }
 </div>

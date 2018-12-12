@@ -1,0 +1,21 @@
+@using Library.Models
+@{
+  Layout = "_Layout";
+}
+
+<div class="container">
+    <h2>Library</h2>
+    <br>
+    <p>@Model["patron"].GetName()</p>
+    <div>
+        <ul>
+            @foreach(BookClass book in @Model["books"])
+            {
+                <form action = '/patron/account/@Model["patron"].GetId()/remove' method="post">
+                <li>@book.GetTitle()</li><button name="bookId" value=@book.GetId() class="removeButton" type="submit">Return</button>
+                </form>
+            }
+        </ul>
+    </div>
+    <br>
+</div>

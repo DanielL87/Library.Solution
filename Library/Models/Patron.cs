@@ -63,6 +63,27 @@ namespace Library.Models
         return id;
         }
 
+        public static string GetPatronNameById(int patron_id)
+        {
+        MySqlConnection conn = DB.Connection();
+        conn.Open();
+        MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
+        cmd.CommandText = @"SELECT name FROM patrons WHERE id = " + patron_id + ";";
+        MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
+
+        string name = "";
+        while(rdr.Read())
+        {
+            name = rdr.GetString(0);
+        }
+        conn.Close();
+        if (conn != null)
+        {
+            conn.Dispose();
+        }
+        return name;
+        }
+
         public static bool CheckPatronExistByName(string name)
         {
             MySqlConnection conn = DB.Connection();
@@ -89,6 +110,32 @@ namespace Library.Models
             }
 
             return exists;
+        }
+
+        public static List<BookClass> GetBooksByPatronId(int patronId)
+        {
+        List<BookClass> allBooks = new List<BookClass> {};
+        MySqlConnection conn = DB.Connection();
+        conn.Open();
+        MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
+        cmd.CommandText = @"SELECT books.* FROM books
+            JOIN patrons_copies ON (books.id = patrons_copies.book_id)
+            JOIN patrons ON (patrons_copies.patron_id = patrons.id)
+            WHERE patrons.id = " + patronId + ";";
+        MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
+        while(rdr.Read())
+        {
+            int id = rdr.GetInt32(0);
+            string _title = rdr.GetString(1);
+            BookClass newBook = new BookClass(_title, id);
+            allBooks.Add(newBook);
+        }
+        conn.Close();
+        if (conn != null)
+        {
+            conn.Dispose();
+        }
+        return allBooks;
         }
     }
 }

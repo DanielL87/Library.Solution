@@ -1,0 +1,23 @@
+@{
+  Layout = "_Layout";
+}
+
+<div class="container">
+<h2>Library</h2>
+<br>
+<a href="/catalog/books/show">Click Here to See a List of Books</a><br>
+<a href="/catalog/authors/show">Click Here to See a List of Authors</a><br>
+
+ <form action="/catalog/books/search" method="post">
+        <label for="bookTitleSearch">Search Catalog by Book Title</label><br>
+        <input id="bookTitleSearch" name="bookTitleSearch" type="text" required><br>
+        <button id="bookSearchButton"class="btn btn-primary btn-lg" type="submit">Search</button>
+</form>
+
+<form action="/catalog/authors/search" method="post">
+        <label for="authorNameSearch">Search Catalog by Author Namee</label><br>
+        <input id="authorNameSearch" name="authorNameSearch" type="text" required><br>
+        <button id="authorSearchButoon"class="btn btn-primary btn-lg" type="submit">Search</button>
+</form>
+
+</div>

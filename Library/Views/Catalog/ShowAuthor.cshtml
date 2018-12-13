@@ -1,0 +1,15 @@
+@using Library.Models
+@{
+  Layout = "_Layout";
+}
+
+<div class="container">
+<h2>Name: @Model["author"].GetName()</h2><br>
+
+<ul>
+@foreach (var book in Model["books"])
+    {
+        <li><a href="/catalog/books/@book.GetId()">@book.GetTitle()</a></li>
+    }
+ </ul>      
+</div>

@@ -1,0 +1,12 @@
+@{
+  Layout = "_Layout";
+}
+
+<div>
+    <ul>
+        @foreach (var book in Model)
+        {
+            <li><a href="/catalog/books/@book.GetId()">@book.GetTitle()</li>    
+        }
+    </div>
+</div>

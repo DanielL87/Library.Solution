@@ -23,18 +23,18 @@ namespace Library.Controllers
         public ActionResult Create(string bookTitle, string bookAuthor)
         {
             
-            if (BookClass.CheckBookExistByTitle(bookTitle) == false)
+            if (BookClass.CheckBookExistByTitle(bookTitle) == false && AuthorClass.CheckAuthorExistByName(bookAuthor) == false)
             {
                 BookClass.Save(bookTitle);
                 AuthorClass.Save(bookAuthor);
                 int bookId = BookClass.GetBookByTitle(bookTitle).GetId();
-                int authorId = (AuthorClass.GetAuthorByName(bookAuthor)[0]).GetId();
+                int authorId = (AuthorClass.GetAuthorByName(bookAuthor)).GetId();
                 JoinBookAuthorClass.Save(authorId, bookId);
                 int initial = 1;
                 CopiesClass.Save(bookId, initial, initial);
                 return RedirectToAction("New");
             }
-            else
+            else if (BookClass.CheckBookExistByTitle(bookTitle) == true && AuthorClass.CheckAuthorExistByName(bookAuthor) == true)
             {
                 int bookId = BookClass.GetBookByTitle(bookTitle).GetId();
                 int amount = CopiesClass.GetAmountByBookId(bookId);
@@ -43,6 +43,16 @@ namespace Library.Controllers
                 amount++;
                 CopiesClass.Update(bookId, amount);
                 CopiesClass.UpdateTotal(bookId, totalAmount);
+                return RedirectToAction("New");
+            }
+            else
+            {
+                BookClass.Save(bookTitle);
+                int bookId = BookClass.GetBookByTitle(bookTitle).GetId();
+                int authorId = (AuthorClass.GetAuthorByName(bookAuthor)).GetId();
+                JoinBookAuthorClass.Save(authorId, bookId);
+                int initial = 1;
+                CopiesClass.Save(bookId, initial, initial);
                 return RedirectToAction("New");
             }
         }

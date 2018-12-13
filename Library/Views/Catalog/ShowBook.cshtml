@@ -1,0 +1,11 @@
+@using Library.Models
+@{
+  Layout = "_Layout";
+}
+
+<div class="container">
+<h2>Title: @Model["book"].GetTitle()</h2><br>
+<p>Author: @Model["author"].GetName()</p><br>
+<p>Total in Circulation: @Model["copies"].GetTotal()</p><br>
+<p>Books Available for Checkout: @Model["copies"].GetAmount()</p><br>
+</div>

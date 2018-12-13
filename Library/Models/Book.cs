@@ -75,7 +75,7 @@ namespace Library.Models
         MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
 
         int id = 0;
-        string _title = "";
+        string _title = "This Book Does Not Exist in the Database!";
         while(rdr.Read())
         {
             id = rdr.GetInt32(0);
@@ -87,6 +87,30 @@ namespace Library.Models
             conn.Dispose();
         }
         BookClass book = new BookClass(_title, id);
+        return book;
+        }
+
+        public static BookClass GetBookById(int id)
+        {
+        MySqlConnection conn = DB.Connection();
+        conn.Open();
+        MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
+        cmd.CommandText = @"SELECT * FROM books WHERE id = '" + id + "';";
+        MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
+
+        int _id = 0;
+        string _title = "This Book Does Not Exist in the Database!";
+        while(rdr.Read())
+        {
+            _id = rdr.GetInt32(0);
+            _title = rdr.GetString(1);
+        }
+        conn.Close();
+        if (conn != null)
+        {
+            conn.Dispose();
+        }
+        BookClass book = new BookClass(_title, _id);
         return book;
         }
 
@@ -118,5 +142,32 @@ namespace Library.Models
             return exists;
         }
 
+        public static List<BookClass> GetBooksByAuthorId(int authorId)
+        {
+        List<BookClass> books = new List<BookClass>{};
+        MySqlConnection conn = DB.Connection();
+        conn.Open();
+        MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
+        cmd.CommandText = @"SELECT books.* FROM books
+            JOIN authors_books ON (books.id = authors_books.book_id)
+            JOIN authors ON (authors_books.author_id = authors.id)
+            WHERE authors.id = " + authorId + ";";
+        MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
+        
+        while(rdr.Read())
+        {
+            int id = rdr.GetInt32(0);
+            string title = rdr.GetString(1);
+            BookClass book = new BookClass(title, id);
+            books.Add(book);
+        }
+        
+        conn.Close();
+        if (conn != null)
+        {
+            conn.Dispose();
+        }
+        return books;
+        }
     }
 }

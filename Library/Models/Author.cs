@@ -42,6 +42,30 @@ namespace Library.Models
             }
         }
 
+        public static List<AuthorClass> GetAll()
+        {
+            List<AuthorClass> allAuthors = new List <AuthorClass> {};
+            MySqlConnection conn = DB.Connection();
+            conn.Open();
+            var cmd = conn.CreateCommand() as MySqlCommand;
+            cmd.CommandText = @"SELECT * FROM authors;";
+            var rdr = cmd.ExecuteReader() as MySqlDataReader;
+            while(rdr.Read())
+            {
+                int id = rdr.GetInt32(0);
+                string title = rdr.GetString(1);
+            
+                AuthorClass newAuthor = new AuthorClass(title, id);
+                allAuthors.Add(newAuthor);
+            }
+            conn.Close();
+            if (conn != null)
+            {
+                conn.Dispose();
+            }
+            return allAuthors;
+        }
+
         public static List<AuthorClass> GetAuthorByName(string name)
         {
         List<AuthorClass> allAuthors = new List<AuthorClass> {};

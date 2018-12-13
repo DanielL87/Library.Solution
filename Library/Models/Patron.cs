@@ -42,6 +42,30 @@ namespace Library.Models
             }
         }
 
+        public static List<PatronClass> GetAll()
+        {
+            List<PatronClass> allPatrons = new List <PatronClass> {};
+            MySqlConnection conn = DB.Connection();
+            conn.Open();
+            var cmd = conn.CreateCommand() as MySqlCommand;
+            cmd.CommandText = @"SELECT * FROM patrons;";
+            var rdr = cmd.ExecuteReader() as MySqlDataReader;
+            while(rdr.Read())
+            {
+                int id = rdr.GetInt32(0);
+                string title = rdr.GetString(1);
+                
+                PatronClass newPatron = new PatronClass(title, id);
+                allPatrons.Add(newPatron);
+            }
+            conn.Close();
+            if (conn != null)
+            {
+                conn.Dispose();
+            }
+            return allPatrons;
+        }
+
         public static int GetPatronIdByName(string name)
         {
         MySqlConnection conn = DB.Connection();
@@ -96,7 +120,7 @@ namespace Library.Models
             {
                 if (name == rdr.GetString(1))
                 {
-                    exists = true;
+                     
                 }
                 else
                 {
